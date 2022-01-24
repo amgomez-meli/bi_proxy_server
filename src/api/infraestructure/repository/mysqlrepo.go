@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	"src/api/config"
 )
 
 type UserMySQL struct {
