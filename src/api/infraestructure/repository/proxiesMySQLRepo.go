@@ -29,13 +29,8 @@ func NewClientMySQL(db *sql.DB) *ProxyMySQL {
 	}
 }
 
+func (r *ProxyMySQL) getTypes(*domain.Proxy_name, error) {
 
-
-
-func (r *ProxyMySQL) getTypes(,error) {
-	stmt, err := r.db.Prepare(`select id, proxy_type from types`)
-	if err != nil {
-		return nil, err
-	}
+	// stmt, err := r.db.Prepare(`select id, proxy_type from types`)
 
 }
