@@ -12,3 +12,8 @@ type Reader interface {
 type Repository interface {
 	Reader
 }
+
+type APIClient interface {
+	Get(url string, headers map[string]interface{}, body string, proxy string) (string, error)
+	Post(url string, headers map[string]interface{}, body string, proxy string) (string, error)
+}
