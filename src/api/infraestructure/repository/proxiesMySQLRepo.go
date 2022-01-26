@@ -7,6 +7,7 @@ import (
 
 	"github.com/amgomez-meli/bi_proxy_server/src/api/config"
 	"github.com/amgomez-meli/bi_proxy_server/src/api/domain"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type ProxyMySQL struct {
@@ -22,7 +23,7 @@ func NewProxyRepo() *ProxyMySQL {
 		log.Fatal(err.Error())
 
 	}
-	defer db.Close()
+	// defer db.Close()
 
 	return &ProxyMySQL{
 		db: db,
@@ -58,7 +59,7 @@ func (r *ProxyMySQL) GetTypes() ([]*domain.Proxies_Types, error) {
 
 func (r *ProxyMySQL) GetProxyNames() ([]*domain.Proxies_List, error) {
 
-	stmt, err := r.db.Prepare(`select id, name,type from proxy`)
+	stmt, err := r.db.Prepare(`select id, service_name from proxy_services`)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +72,7 @@ func (r *ProxyMySQL) GetProxyNames() ([]*domain.Proxies_List, error) {
 
 	for rows.Next() {
 		var z domain.Proxies_List
-		err = rows.Scan(&z.ID, &z.Proxy_name, &z.Proxy_type)
+		err = rows.Scan(&z.ID, &z.Proxy_name)
 		if err != nil {
 			return nil, err
 		}
@@ -112,7 +113,7 @@ func (r *ProxyMySQL) GetTypesAndNames() ([]*domain.Proxies_Names_types, error) {
 
 func (r *ProxyMySQL) GetProxyURILISTByType(entityName string) ([]string, error) {
 
-	query_str := `select id,uri from ` + entityName
+	query_str := `select id,proxy_uri from ` + entityName
 
 	stmt, err := r.db.Prepare(query_str)
 	if err != nil {

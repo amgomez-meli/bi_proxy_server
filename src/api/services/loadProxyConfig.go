@@ -1,11 +1,13 @@
 package services
 
+import "fmt"
+
 type Proxyconfig struct {
 	Configurations map[string][]string
 	repo           Repository
 }
 
-func newLoadConfigService(r Repository) *Proxyconfig {
+func NewLoadConfigService(r Repository) *Proxyconfig {
 	configmap := make(map[string][]string)
 
 	return &Proxyconfig{
@@ -15,19 +17,22 @@ func newLoadConfigService(r Repository) *Proxyconfig {
 
 }
 
-func (z *Proxyconfig) loadProxiesList() {
+func (z *Proxyconfig) LoadProxiesList() {
 
 	names, err := z.repo.GetProxyNames()
 
 	if err != nil {
+		fmt.Println(err)
 
 		return
 	}
 
 	for _, name := range names {
+		fmt.Println(name.Proxy_name)
 		proxy_List, err := z.repo.GetProxyURILISTByType(name.Proxy_name)
 
 		if err != nil {
+			fmt.Println(err)
 
 			return
 		}
@@ -35,5 +40,11 @@ func (z *Proxyconfig) loadProxiesList() {
 		z.Configurations[name.Proxy_name] = proxy_List
 
 	}
+
+}
+
+func (z *Proxyconfig) GetURIFromProvider(keytosearch string) []string {
+
+	return z.Configurations[keytosearch]
 
 }
