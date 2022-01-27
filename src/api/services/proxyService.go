@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/amgomez-meli/bi_proxy_server/src/api/domain"
+	"github.com/amgomez-meli/bi_proxy_server/src/api/utils"
 )
 
 type ProxyServ struct {
@@ -49,5 +50,15 @@ func (z *ProxyServ) AssignProxy(s map[string]bool) string {
 	}
 
 	return proxy_uri
+
+}
+
+func (z *ProxyServ) GetURI(jsonstring string) string {
+	parser := utils.GenericParserMap(jsonstring)
+	EntityHandler := utils.ProcessJsonMsg(parser)
+
+	prox := z.AssignProxy(EntityHandler.GetConfigurationAsMap())
+
+	return prox
 
 }

@@ -19,6 +19,6 @@ type Input_Request_Config struct {
 type Input_Request_Options struct {
 	Url     string
 	Method  string
-	headers map[string]interface{}
-	body    map[string]interface{}
+	Headers map[string]bool
+	Body    map[string]bool
 }
