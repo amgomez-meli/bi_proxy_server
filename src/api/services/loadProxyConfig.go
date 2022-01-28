@@ -3,8 +3,10 @@ package services
 import "fmt"
 
 type Proxyconfig struct {
-	Configurations map[string][]string
-	repo           Repository
+	Configurations  map[string][]string
+	RotatedAgents   []string
+	UnRotatedAgents []string
+	repo            Repository
 }
 
 func NewLoadConfigService(r Repository) *Proxyconfig {
@@ -43,8 +45,22 @@ func (z *Proxyconfig) LoadProxiesList() {
 
 }
 
+func (z *Proxyconfig) LoadUserAgents() {
+	rotated := z.repo.GetUserAgentsRotated()
+	unrotated := z.repo.GetUserAgentsUnRotated()
+	z.RotatedAgents = rotated
+	z.UnRotatedAgents = unrotated
+
+}
+
 func (z *Proxyconfig) GetURIFromProvider(keytosearch string) []string {
 
 	return z.Configurations[keytosearch]
+
+}
+
+func (z *Proxyconfig) GetAgents() ([]string, []string) {
+
+	return z.RotatedAgents, z.UnRotatedAgents
 
 }
