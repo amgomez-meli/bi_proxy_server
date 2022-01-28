@@ -7,8 +7,8 @@ type Reader interface {
 	GetProxyNames() ([]*domain.Proxies_List, error)
 	GetTypesAndNames() ([]*domain.Proxies_Names_types, error)
 	GetProxyURILISTByType(entityName string) ([]string, error)
-	GetUserAgentsRotated() []string
-	GetUserAgentsUnRotated() []string
+	GetUserAgentsRotated() ([]string, error)
+	GetUserAgentsUnRotated() ([]string, error)
 }
 
 type Repository interface {

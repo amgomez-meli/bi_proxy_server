@@ -140,15 +140,15 @@ func (r *ProxyMySQL) GetProxyURILISTByType(entityName string) ([]string, error) 
 
 }
 
-func GetUserAgentsRotated() []string {
+func (r *ProxyMySQL) GetUserAgentsRotated() ([]string, error) {
 
 	var a []string
-	return a
+	return a, nil
 
 }
-func GetUserAgentsUnRotated() []string {
+func (r *ProxyMySQL) GetUserAgentsUnRotated() ([]string, error) {
 
 	var a []string
-	return a
+	return a, nil
 
 }

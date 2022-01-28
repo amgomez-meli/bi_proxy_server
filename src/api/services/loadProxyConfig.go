@@ -46,8 +46,14 @@ func (z *Proxyconfig) LoadProxiesList() {
 }
 
 func (z *Proxyconfig) LoadUserAgents() {
-	rotated := z.repo.GetUserAgentsRotated()
-	unrotated := z.repo.GetUserAgentsUnRotated()
+	rotated, err := z.repo.GetUserAgentsRotated()
+
+	unrotated, err := z.repo.GetUserAgentsUnRotated()
+
+	if err != nil {
+		fmt.Println(err)
+
+	}
 	z.RotatedAgents = rotated
 	z.UnRotatedAgents = unrotated
 
