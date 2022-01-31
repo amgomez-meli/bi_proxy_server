@@ -12,19 +12,21 @@ type ProxyServ struct {
 	Client      APIClient
 	Proxy_list  map[string][]string
 	Proxy_types []*domain.Proxies_Names_types
+	Biz         Biz_Layer
 }
 
-func NewProxyService(a APIClient, proxys_lists map[string][]string, proxys_types []*domain.Proxies_Names_types) *ProxyServ {
+func NewProxyService(a APIClient, proxys_lists map[string][]string, proxys_types []*domain.Proxies_Names_types, biz Biz_Layer) *ProxyServ {
 
 	return &ProxyServ{
 		Client:      a,
 		Proxy_list:  proxys_lists,
 		Proxy_types: proxys_types,
+		Biz:         biz,
 	}
 
 }
 
-func (z *ProxyServ) AssignProxy(s map[string]bool) string {
+func (z *ProxyServ) AssignProxy(s map[string]bool) (string, string) {
 	var proxy_type string
 	var proxy_name string
 	var proxy_uri string
@@ -49,15 +51,19 @@ func (z *ProxyServ) AssignProxy(s map[string]bool) string {
 
 	}
 
-	return proxy_uri
+	return proxy_uri, proxy_type
 
 }
 
 func (z *ProxyServ) GetURI(jsonstring string) string {
 	parser := utils.GenericParserMap(jsonstring)
 	EntityHandler := utils.ProcessJsonMsg(parser)
+	var proxtype string
+	var prox string
 
-	prox := z.AssignProxy(EntityHandler.GetConfigurationAsMap())
+	prox, proxtype = z.AssignProxy(EntityHandler.GetConfigurationAsMap())
+	newhead := z.Biz.ApplyBizConvs(*EntityHandler, proxtype)
+	z.Client.Get(EntityHandler.GetURI(), newhead, EntityHandler.GetBody(), prox)
 
 	return prox
 

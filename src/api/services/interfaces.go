@@ -1,6 +1,9 @@
 package services
 
-import "github.com/amgomez-meli/bi_proxy_server/src/api/domain"
+import (
+	"github.com/amgomez-meli/bi_proxy_server/src/api/domain"
+	"github.com/amgomez-meli/bi_proxy_server/src/api/utils"
+)
 
 type Reader interface {
 	GetTypes() ([]*domain.Proxies_Types, error)
@@ -16,9 +19,10 @@ type Repository interface {
 }
 
 type APIClient interface {
-	Get(url string, headers map[string]interface{}, body string, proxy string) (string, error)
-	Post(url string, headers map[string]interface{}, body string, proxy string) (string, error)
+	Get(url string, headers map[string]string, body map[string]interface{}, proxy string) (string, error)
+	Post(url string, headers map[string]string, body string, proxy string) (string, error)
 }
 
-type Request_Resolver interface {
+type Biz_Layer interface {
+	ApplyBizConvs(hd utils.Handler, proxy_type string) map[string]string
 }
